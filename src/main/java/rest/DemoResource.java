@@ -20,48 +20,47 @@ import utils.PuSelector;
 @Path("info")
 public class DemoResource {
 
-  @Context
-  private UriInfo context;
+    @Context
+    private UriInfo context;
 
-  @Context
-  SecurityContext securityContext;
+    @Context
+    SecurityContext securityContext;
 
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public String getInfoForAll() {
-    return "{\"msg\":\"Hello anonymous\"}";
-  }
-
-  //Just to verify if the database is setup
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  @Path("all")
-  public String allUsers() {
-    EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
-    try{
-      List<User> users = em.createQuery("select user from User user").getResultList();
-      return "["+users.size()+"]";
-    } finally {
-      em.close();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getInfoForAll() {
+        return "{\"msg\":\"Hello anonymous\"}";
     }
- 
-  }
 
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  @Path("user")
-  @RolesAllowed("user")
-  public String getFromUser() {
-    String thisuser = securityContext.getUserPrincipal().getName();
-    return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
-  }
+    //Just to verify if the database is setup
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("all")
+    public String allUsers() {
+        EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
+        try {
+            List<User> users = em.createQuery("select user from User user").getResultList();
+            return "[" + users.size() + "]";
+        } finally {
+            em.close();
+        }
+    }
 
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  @Path("admin")
-  @RolesAllowed("admin")
-  public String getFromAdmin() {
-    String thisuser = securityContext.getUserPrincipal().getName();
-    return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
-  }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("user")
+    @RolesAllowed("user")
+    public String getFromUser() {
+        String thisuser = securityContext.getUserPrincipal().getName();
+        return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("admin")
+    @RolesAllowed("admin")
+    public String getFromAdmin() {
+        String thisuser = securityContext.getUserPrincipal().getName();
+        return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
+    }
 }

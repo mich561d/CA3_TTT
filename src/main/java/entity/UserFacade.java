@@ -9,20 +9,21 @@ import utils.PuSelector;
  * @author lam@cphbusiness.dk
  */
 public class UserFacade {
-  
+
     private static EntityManagerFactory emf;
     private static UserFacade instance;
-    
-    private UserFacade(){}
-    
-    public static UserFacade getInstance(EntityManagerFactory factory){
-        if(instance == null){
-          emf = factory;
-          instance = new UserFacade();
+
+    private UserFacade() {
+    }
+
+    public static UserFacade getInstance(EntityManagerFactory factory) {
+        if (instance == null) {
+            emf = factory;
+            instance = new UserFacade();
         }
         return instance;
     }
-    
+
     public User getVeryfiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
